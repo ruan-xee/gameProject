@@ -10,6 +10,9 @@ import java.awt.image.BufferedImage;
  * 障碍物类
  */
 public class Barrier {
+    // 矩阵参数
+    private Rectangle rect;
+
     // 障碍物需要的三个图片
     private static BufferedImage[] images;
 
@@ -34,7 +37,9 @@ public class Barrier {
     // 获得障碍物的宽度和高度
     public static final int BARRIRE_TOP_HEIGHT = images[0].getHeight();
     public static final int BARRIRE_BOTTOM_HEIGHT = images[1].getHeight();
-    public Barrier() {}
+    public Barrier() {
+        this.rect = new Rectangle();
+    }
 
     public Barrier(int x, int y, int height, int gap) {
         this.x = x;
@@ -52,6 +57,7 @@ public class Barrier {
     // 绘制从上向下的障碍物
     private void drawTopMormal(Graphics g) {
         g.drawImage(images[0], x, -BARRIRE_TOP_HEIGHT + height, null);
+        g.drawRect(x, -BARRIRE_TOP_HEIGHT + height, images[0].getWidth(), BARRIRE_TOP_HEIGHT);
         x -= SPEED;
     }
 
@@ -61,10 +67,11 @@ public class Barrier {
             gap = Constant.FRAME_HEIGHT - BARRIRE_BOTTOM_HEIGHT - height;
         }
         g.drawImage(images[1], x, height + gap, null);
+        g.drawRect(x, height + gap, images[0].getWidth(), BARRIRE_BOTTOM_HEIGHT);
     }
 
     public boolean isInFrame() {
-        return (Constant.FRAME_WIDTH - x) > 150;
+        return (Constant.FRAME_WIDTH - x) > 180;
     }
 
     public boolean isOutFrame() {

@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Bird {
+    // 小鸟矩形形象
+    private Rectangle rect;
+
     // 存放小鸟图片
     private BufferedImage[] images;
     public static final int BIRD_COUNT = 3;
@@ -22,7 +25,7 @@ public class Bird {
     private boolean down = false;
 
     // 小鸟的移动速度
-    private int speed = 4;
+    private int speed = 5;
 
     // 小鸟的位置
     private int bird_x = 150;
@@ -33,11 +36,19 @@ public class Bird {
         for (int i = 0; i <BIRD_COUNT; i++) {
             images[i] = GameUtil.loadBufferedImgage(Constant.BIRD_IMGS[i]);
         }
+
+        int w = images[0].getWidth() - 10;
+        int h = images[0].getHeight() - 10;
+        rect = new Rectangle(w, h);
     }
 
     public void draw(Graphics g) {
         this.flyLogic();
         g.drawImage(images[state], bird_x, bird_y, null);
+
+        g.drawRect(bird_x + 5, bird_y + 5, rect.width, rect.height);
+        rect.x = bird_x + 5;
+        rect.y = bird_y + 5;
     }
 
     // 控制小鸟移动方向
