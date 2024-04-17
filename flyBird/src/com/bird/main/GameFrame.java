@@ -81,7 +81,7 @@ public class GameFrame extends Frame {
         Graphics graphics = buffImg.getGraphics();
         gameBackGround.draw(graphics);
         gameFrontGround.draw(graphics);
-        gameBarrierLayer.draw(graphics);
+        gameBarrierLayer.draw(graphics, bird);
         bird.draw(graphics);
 
         // 一次性将图片绘制到图片上

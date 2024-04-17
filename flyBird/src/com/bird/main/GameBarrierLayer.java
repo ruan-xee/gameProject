@@ -17,7 +17,7 @@ public class GameBarrierLayer {
     }
 
     // 绘制障碍物
-    public void draw(Graphics g) {
+    public void draw(Graphics g, Bird bird) {
         for (int i = 0; i < barriers.size(); i++) {
             Barrier barrier = barriers.get(i);
             if (barrier.isOutFrame()) {
@@ -28,6 +28,7 @@ public class GameBarrierLayer {
             }
             barrier.draw(g);
         }
+        collideBird(bird);
         logic();
     }
 
@@ -49,7 +50,8 @@ public class GameBarrierLayer {
         barrier.setY(y);
         barrier.setHeight(height);
         barrier.setGap(gap);
-
+        barrier.getRectTop().setSize(Barrier.BARRIRE_TOP_WIDTH, -Barrier.BARRIRE_TOP_HEIGHT + height);
+        barrier.getRectBottom().setSize(Barrier.BARRIRE_BOTTOM_WIDTH, height + gap);
         barriers.add(barrier);
     }
 
@@ -60,5 +62,18 @@ public class GameBarrierLayer {
 
     private int getRandomHeight() {
         return 20 + (int) (Math.random() * Constant.FRAME_HEIGHT);
+    }
+
+    /**
+     * 判断障碍物和小鸟发生碰撞
+     */
+    public boolean collideBird(Bird bird) {
+        for (int i = 0; i < barriers.size(); i++) {
+            Barrier barrier = barriers.get(i);
+            if (barrier.getRectBottom().intersects(bird.getRect()) || barrier.getRectTop().intersects(bird.getRect())) {
+                System.out.println("撞上了");
+            }
+        }
+        return false;
     }
 }

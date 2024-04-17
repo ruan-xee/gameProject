@@ -11,9 +11,10 @@ import java.awt.image.BufferedImage;
  */
 public class Barrier {
     // 矩阵参数
-    private Rectangle rect;
+    private Rectangle rectTop;
+    private Rectangle rectBottom;
 
-    // 障碍物需要的三个图片
+    // 障碍物需要的2个图片
     private static BufferedImage[] images;
 
     private static final int SPEED = 3;
@@ -37,8 +38,11 @@ public class Barrier {
     // 获得障碍物的宽度和高度
     public static final int BARRIRE_TOP_HEIGHT = images[0].getHeight();
     public static final int BARRIRE_BOTTOM_HEIGHT = images[1].getHeight();
+    public static final int BARRIRE_TOP_WIDTH = images[0].getWidth();
+    public static final int BARRIRE_BOTTOM_WIDTH = images[1].getWidth();
     public Barrier() {
-        this.rect = new Rectangle();
+        this.rectTop = new Rectangle();
+        this.rectBottom = new Rectangle();
     }
 
     public Barrier(int x, int y, int height, int gap) {
@@ -58,6 +62,8 @@ public class Barrier {
     private void drawTopMormal(Graphics g) {
         g.drawImage(images[0], x, -BARRIRE_TOP_HEIGHT + height, null);
         g.drawRect(x, -BARRIRE_TOP_HEIGHT + height, images[0].getWidth(), BARRIRE_TOP_HEIGHT);
+        rectTop.x = x;
+        rectTop.y = -BARRIRE_TOP_HEIGHT + height;
         x -= SPEED;
     }
 
@@ -68,6 +74,9 @@ public class Barrier {
         }
         g.drawImage(images[1], x, height + gap, null);
         g.drawRect(x, height + gap, images[0].getWidth(), BARRIRE_BOTTOM_HEIGHT);
+        rectBottom.x = x;
+        rectBottom.y = height + gap;
+
     }
 
     public boolean isInFrame() {
@@ -111,5 +120,21 @@ public class Barrier {
 
     public void setGap(int gap) {
         this.gap = gap;
+    }
+
+    public Rectangle getRectTop() {
+        return rectTop;
+    }
+
+    public void setRectTop(Rectangle rectTop) {
+        this.rectTop = rectTop;
+    }
+
+    public Rectangle getRectBottom() {
+        return rectBottom;
+    }
+
+    public void setRectBottom(Rectangle rectBottom) {
+        this.rectBottom = rectBottom;
     }
 }

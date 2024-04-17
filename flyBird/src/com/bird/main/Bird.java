@@ -38,7 +38,7 @@ public class Bird {
         }
 
         int w = images[0].getWidth() - 10;
-        int h = images[0].getHeight() - 10;
+        int h = images[0].getHeight() - 21;
         rect = new Rectangle(w, h);
     }
 
@@ -46,7 +46,7 @@ public class Bird {
         this.flyLogic();
         g.drawImage(images[state], bird_x, bird_y, null);
 
-        g.drawRect(bird_x + 5, bird_y + 5, rect.width, rect.height);
+        g.drawRect(bird_x + 5, bird_y + 13, rect.width, rect.height);
         rect.x = bird_x + 5;
         rect.y = bird_y + 5;
     }
@@ -78,5 +78,9 @@ public class Bird {
                 break;
 
         }
+    }
+
+    public Rectangle getRect() {
+        return rect;
     }
 }
