@@ -64,6 +64,7 @@ public class Barrier {
         g.drawRect(x, -BARRIRE_TOP_HEIGHT + height, images[0].getWidth(), BARRIRE_TOP_HEIGHT);
         rectTop.x = x;
         rectTop.y = -BARRIRE_TOP_HEIGHT + height;
+        rectTop.height = BARRIRE_TOP_HEIGHT;
         x -= SPEED;
     }
 

@@ -12,8 +12,11 @@ import java.util.List;
 public class GameBarrierLayer {
     private List<Barrier> barriers;
 
+    private GameTime gameTime;
+
     public GameBarrierLayer() {
         barriers = new ArrayList<>();
+        gameTime = new GameTime();
     }
 
     // 绘制障碍物
@@ -29,17 +32,21 @@ public class GameBarrierLayer {
             barrier.draw(g);
         }
         collideBird(bird);
-        logic();
+        logic(g);
     }
 
-    public void logic() {
+    public void logic(Graphics g) {
         if (barriers.size() == 0) {
             insert(Constant.FRAME_WIDTH, 0, getRandomHeight(), getRandomGap());
+            gameTime.begin();
         } else {
             Barrier last = barriers.get(barriers.size() - 1);
             if (last.isInFrame()) {
                 insert(Constant.FRAME_WIDTH, 0, getRandomHeight(), getRandomGap());
             }
+            long diff = gameTime.diff();
+            g.setFont(new Font("微软雅黑", Font.BOLD, 20));
+            g.drawString("坚持时长：" + diff + "秒", 100, 50);
 
         }
     }
@@ -72,8 +79,16 @@ public class GameBarrierLayer {
             Barrier barrier = barriers.get(i);
             if (barrier.getRectBottom().intersects(bird.getRect()) || barrier.getRectTop().intersects(bird.getRect())) {
                 System.out.println("撞上了");
+                bird.setLive(false);
             }
         }
         return false;
+    }
+
+    /**
+     * 用于清空障碍物的池子
+     */
+    public void restant() {
+        barriers.clear();
     }
 }

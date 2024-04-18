@@ -31,6 +31,9 @@ public class Bird {
     private int bird_x = 150;
     private int bird_y = 200;
 
+    // 小鸟生命
+    private boolean live = true;
+
     public Bird() {
         images = new BufferedImage[BIRD_COUNT];
         for (int i = 0; i <BIRD_COUNT; i++) {
@@ -82,5 +85,19 @@ public class Bird {
 
     public Rectangle getRect() {
         return rect;
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
+    }
+
+    public void restartDraw() {
+        this.live = true;
+        this.bird_x = 150;
+        this.bird_y = 200;
     }
 }

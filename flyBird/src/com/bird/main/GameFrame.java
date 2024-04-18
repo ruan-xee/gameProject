@@ -77,15 +77,22 @@ public class GameFrame extends Frame {
 
     @Override
     public void update(Graphics g) {
-        // 得到图片的画笔
-        Graphics graphics = buffImg.getGraphics();
-        gameBackGround.draw(graphics);
-        gameFrontGround.draw(graphics);
-        gameBarrierLayer.draw(graphics, bird);
-        bird.draw(graphics);
+        if (bird.isLive()) {
+            // 得到图片的画笔
+            Graphics graphics = buffImg.getGraphics();
+            gameBackGround.draw(graphics);
+            gameFrontGround.draw(graphics);
+            gameBarrierLayer.draw(graphics, bird);
+            bird.draw(graphics);
 
-        // 一次性将图片绘制到图片上
-        g.drawImage(buffImg, 0, 0, null);
+            // 一次性将图片绘制到图片上
+            g.drawImage(buffImg, 0, 0, null);
+        } else {
+            String over = "游戏结束";
+            g.setColor(Color.RED);
+            g.setFont(new Font("宋体", Font.BOLD, 50));
+            g.drawString(over, 200, 250);
+        }
     }
 
     // 按键
@@ -94,7 +101,16 @@ public class GameFrame extends Frame {
             case KeyEvent.VK_SPACE:
                 bird.fly(1);
                 break;
+            case KeyEvent.VK_ENTER:
+                if (!bird.isLive()) {
+                    restart();
+                }
         }
+    }
+
+    private void restart() {
+        gameBarrierLayer.restant();
+        bird.restartDraw();
     }
 
     // 抬键
