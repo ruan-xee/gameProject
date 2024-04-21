@@ -3,6 +3,7 @@ package com.bird.main;
 import com.bird.util.Constant;
 
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,10 @@ public class GameBarrierLayer {
     private List<Barrier> barriers;
 
     private GameTime gameTime;
+
+    private File file = new File("game.txt");
+
+    private int txt;
 
     public GameBarrierLayer() {
         barriers = new ArrayList<>();
@@ -46,8 +51,45 @@ public class GameBarrierLayer {
             }
             long diff = gameTime.diff();
             g.setFont(new Font("微软雅黑", Font.BOLD, 20));
-            g.drawString("坚持时长：" + diff + "秒", 100, 50);
+            g.drawString("坚持时长：" + diff + "秒", 20, 50);
 
+            txt = getText();
+            if (diff <= txt) {
+                g.drawString("最高成绩：" + txt + "秒", 300, 50);
+            } else {
+                setText(String.valueOf(diff));
+                g.drawString("最高成绩：" + getText() + "秒", 300, 50);
+            }
+        }
+    }
+
+    /**
+     * 读取文件数据
+     */
+    public int getText() {
+        BufferedReader in = null;
+        int s = 0;
+        try {
+            in = new BufferedReader(new FileReader(file));
+            s = Integer.parseInt(in.readLine());
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return s;
+    }
+
+    /**
+     * 用于储存数据
+     */
+    public void setText(String str) {
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(str);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -63,8 +105,8 @@ public class GameBarrierLayer {
     }
 
     private int getRandomGap() {
-        // 间距为50-200;
-        return 50 + (int) (Math.random() * 150);
+        // 间距为80-230;
+        return 80 + (int) (Math.random() * 150);
     }
 
     private int getRandomHeight() {

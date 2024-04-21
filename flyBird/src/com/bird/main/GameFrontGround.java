@@ -14,7 +14,7 @@ public class GameFrontGround {
     // 存放云彩的容器
     private List<Cloud> clouds;
     // 云彩的飞行速度
-    private final static int CLOUD_SPEED = 4;
+    private final static int CLOUD_SPEED = 1;
     // 使用到的图片资源
     private BufferedImage[] img;
     // 用于产生随机数
@@ -52,7 +52,6 @@ public class GameFrontGround {
             if (cloud.isOutFrame()) {
                 clouds.remove(i);
                 i--;
-                System.out.println("云被移除"+cloud);
             }
         }
     }

@@ -61,7 +61,6 @@ public class Barrier {
     // 绘制从上向下的障碍物
     private void drawTopMormal(Graphics g) {
         g.drawImage(images[0], x, -BARRIRE_TOP_HEIGHT + height, null);
-        g.drawRect(x, -BARRIRE_TOP_HEIGHT + height, images[0].getWidth(), BARRIRE_TOP_HEIGHT);
         rectTop.x = x;
         rectTop.y = -BARRIRE_TOP_HEIGHT + height;
         rectTop.height = BARRIRE_TOP_HEIGHT;
@@ -74,7 +73,6 @@ public class Barrier {
             gap = Constant.FRAME_HEIGHT - BARRIRE_BOTTOM_HEIGHT - height;
         }
         g.drawImage(images[1], x, height + gap, null);
-        g.drawRect(x, height + gap, images[0].getWidth(), BARRIRE_BOTTOM_HEIGHT);
         rectBottom.x = x;
         rectBottom.y = height + gap;
 

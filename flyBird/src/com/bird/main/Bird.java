@@ -27,6 +27,9 @@ public class Bird {
     // 小鸟的移动速度
     private int speed = 5;
 
+    // 小鸟加速度
+    private float acceleration;
+
     // 小鸟的位置
     private int bird_x = 150;
     private int bird_y = 200;
@@ -48,8 +51,6 @@ public class Bird {
     public void draw(Graphics g) {
         this.flyLogic();
         g.drawImage(images[state], bird_x, bird_y, null);
-
-        g.drawRect(bird_x + 5, bird_y + 13, rect.width, rect.height);
         rect.x = bird_x + 5;
         rect.y = bird_y + 5;
     }
@@ -57,14 +58,24 @@ public class Bird {
     // 控制小鸟移动方向
     public void flyLogic() {
         if (up) {
-            bird_y -= speed;
+            acceleration -= 0.5;
+            bird_y += acceleration;
+            if (acceleration < -10) {
+                acceleration = -10;
+            }
             if (bird_y < 20) {
                 bird_y = 20;
+                acceleration = 0;
             }
         } else {
-            bird_y += speed;
+            acceleration += 0.5;
+            bird_y += acceleration;
+            if (acceleration > 10) {
+                acceleration = 10;
+            }
             if (bird_y > 465) {
                 bird_y = 465;
+                acceleration = 0;
             }
         }
     }
