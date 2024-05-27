@@ -37,6 +37,11 @@ public class ServerConnectClientThread extends Thread{
                     retMsg.setReciever(message.getSender());
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     oos.writeObject(retMsg);
+                } else if (MessageType.MESSAGE_CLIENT_EXIT.equals(message.getMsgType())) {
+                    System.out.println(message.getSender() + " 退出系统。。。");
+                    ManageServerConnectClientThread.removeServerConnectClientThread(message.getSender());
+                    socket.close();
+                    break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

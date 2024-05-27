@@ -35,4 +35,8 @@ public class ManageServerConnectClientThread {
         }
         return sb.toString();
     }
+
+    public static void removeServerConnectClientThread(String userId) {
+        hm.remove(userId);
+    }
 }
