@@ -1,6 +1,7 @@
 package com.rxee.client.view;
 
 
+import com.rxee.client.service.MessageClientService;
 import com.rxee.client.service.UserClientService;
 import com.rxee.client.util.Utility;
 
@@ -57,7 +58,11 @@ public class QQView {
                                     userClientService.onLineFriendList();
                                     break;
                                 case "2":
-                                    System.out.println("私聊消息\n");
+                                    System.out.print("请输入想聊天的用户号（在线）：");
+                                    String receiver = Utility.readString(50);
+                                    System.out.print("请输入想发送的消息：");
+                                    String content = Utility.readString(100);
+                                    MessageClientService.sendMessageToSomebody(content, userId, receiver);
                                     break;
                                 case "3":
                                     System.out.println("群发消息\n");

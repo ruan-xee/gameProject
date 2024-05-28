@@ -26,6 +26,9 @@ public class ClientConnectServerThread extends Thread {
                     for (int i = 0; i < s.length; i++) {
                         System.out.println("用户：" + s[i]);
                     }
+                } else if (MessageType.MESSAGE_COMM_MSG.equals(message.getMsgType())) {
+                    // 把从服务器端发来的消息显示到控制台
+                    System.out.println("（" + message.getSendTime() + "）" + message.getSender() + " 对你说： " + message.getContent());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

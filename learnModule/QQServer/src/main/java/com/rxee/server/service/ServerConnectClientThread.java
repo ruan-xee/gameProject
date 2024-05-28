@@ -27,7 +27,16 @@ public class ServerConnectClientThread extends Thread{
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 Message message = (Message) ois.readObject();
                 // 判断msg类型，做相应的业务处理
-                if (MessageType.MESSAGE_GET_ONLINE_FRIEND.equals(message.getMsgType())) {
+                if (MessageType.MESSAGE_COMM_MSG.equals(message.getMsgType())) {
+                    ServerConnectClientThread serverConnectClientThread = ManageServerConnectClientThread.getServerConnectClientThread(message.getReciever());
+                    if (serverConnectClientThread != null) {
+                        // 客户端在线，转发消息
+                        ObjectOutputStream oos = new ObjectOutputStream(serverConnectClientThread.getSocket().getOutputStream());
+                        oos.writeObject(message);
+                    } else {
+                        System.out.println(message.getSender() + "所请求的客户端离线，不能转发消息。。。");
+                    }
+                }else if (MessageType.MESSAGE_GET_ONLINE_FRIEND.equals(message.getMsgType())) {
                     // 客户端获取在线列表
                     System.out.println(message.getSender() + " 请求在线用户列表。。。");
                     String onlineUser = ManageServerConnectClientThread.getOnlineUser();
