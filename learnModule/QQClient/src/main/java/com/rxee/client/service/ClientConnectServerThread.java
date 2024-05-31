@@ -28,7 +28,9 @@ public class ClientConnectServerThread extends Thread {
                     }
                 } else if (MessageType.MESSAGE_COMM_MSG.equals(message.getMsgType())) {
                     // 把从服务器端发来的消息显示到控制台
-                    System.out.println("（" + message.getSendTime() + "）" + message.getSender() + " 对你说： " + message.getContent());
+                    System.out.println("（" + message.getSendTime() + "） " + message.getSender() + " 对 你 说： " + message.getContent());
+                } else if (MessageType.MESSAGE_COMM_MSG_TO_ALL.equals(message.getMsgType())) {
+                    System.out.println("（" + message.getSendTime() + "） " + message.getSender() + " 对 大家 说： " + message.getContent());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

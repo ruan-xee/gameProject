@@ -19,7 +19,7 @@ public class MessageClientService {
         msg.setReciever(receiverId);
         msg.setSendTime(new Date().toString());
         msg.setContent(content);
-        System.out.println("("+ msg.getSendTime() + "）你对 " + receiverId + " 说： " + content);
+        System.out.println("("+ msg.getSendTime() + "） 你 对 " + receiverId + " 说： " + content);
         ClientConnectServerThread clientConnectServerThread = ManageClientConnectServerThread.getClientConnectServerThread(sendId);
         try {
             ObjectOutputStream oos = new ObjectOutputStream(clientConnectServerThread.getSocket().getOutputStream());
@@ -27,5 +27,22 @@ public class MessageClientService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void sendMessageToEveryOnline(String content, String sendId) {
+        Message msg = new Message();
+        msg.setMsgType(MessageType.MESSAGE_COMM_MSG_TO_ALL);
+        msg.setSender(sendId);
+        msg.setSendTime(new Date().toString());
+        msg.setContent(content);
+        System.out.println("("+ msg.getSendTime() + "） 你 对 所有人 说： " + content);
+        ClientConnectServerThread clientConnectServerThread = ManageClientConnectServerThread.getClientConnectServerThread(sendId);
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(clientConnectServerThread.getSocket().getOutputStream());
+            oos.writeObject(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

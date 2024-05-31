@@ -27,7 +27,7 @@ public class ServerConnectClientThread extends Thread{
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 Message message = (Message) ois.readObject();
                 // 判断msg类型，做相应的业务处理
-                if (MessageType.MESSAGE_COMM_MSG.equals(message.getMsgType())) {
+                if (MessageType.MESSAGE_COMM_MSG.equals(message.getMsgType())) { // 私聊消息转发
                     ServerConnectClientThread serverConnectClientThread = ManageServerConnectClientThread.getServerConnectClientThread(message.getReciever());
                     if (serverConnectClientThread != null) {
                         // 客户端在线，转发消息
@@ -36,7 +36,16 @@ public class ServerConnectClientThread extends Thread{
                     } else {
                         System.out.println(message.getSender() + "所请求的客户端离线，不能转发消息。。。");
                     }
-                }else if (MessageType.MESSAGE_GET_ONLINE_FRIEND.equals(message.getMsgType())) {
+                } else if (MessageType.MESSAGE_COMM_MSG_TO_ALL.equals(message.getMsgType())) { // 群聊消息转发
+                    // 需要遍历在线用户线程集合，得到每个线程的socket（排除自己）
+                    for (ServerConnectClientThread serverConnectClientThread : ManageServerConnectClientThread.getHm().values()) {
+                        if (!serverConnectClientThread.getUserId().equals(message.getSender())) {
+                            // 不发送给发送者
+                            ObjectOutputStream oos = new ObjectOutputStream(serverConnectClientThread.getSocket().getOutputStream());
+                            oos.writeObject(message);
+                        }
+                    }
+                }else if (MessageType.MESSAGE_GET_ONLINE_FRIEND.equals(message.getMsgType())) { // 获取在线列表
                     // 客户端获取在线列表
                     System.out.println(message.getSender() + " 请求在线用户列表。。。");
                     String onlineUser = ManageServerConnectClientThread.getOnlineUser();
@@ -46,7 +55,7 @@ public class ServerConnectClientThread extends Thread{
                     retMsg.setReciever(message.getSender());
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     oos.writeObject(retMsg);
-                } else if (MessageType.MESSAGE_CLIENT_EXIT.equals(message.getMsgType())) {
+                } else if (MessageType.MESSAGE_CLIENT_EXIT.equals(message.getMsgType())) { // 退出
                     System.out.println(message.getSender() + " 退出系统。。。");
                     ManageServerConnectClientThread.removeServerConnectClientThread(message.getSender());
                     socket.close();

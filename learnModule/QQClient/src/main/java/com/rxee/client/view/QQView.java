@@ -65,7 +65,9 @@ public class QQView {
                                     MessageClientService.sendMessageToSomebody(content, userId, receiver);
                                     break;
                                 case "3":
-                                    System.out.println("群发消息\n");
+                                    System.out.print("请输入想对所有人说的话：");
+                                    String c = Utility.readString(100);
+                                    MessageClientService.sendMessageToEveryOnline(c, userId);
                                     break;
                                 case "4":
                                     System.out.println("发送文件\n");
