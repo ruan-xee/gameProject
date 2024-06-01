@@ -1,6 +1,10 @@
 package com.rxee.server.service;
 
+import com.rxee.qqcommon.Message;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -8,6 +12,9 @@ import java.util.Set;
  */
 public class ManageServerConnectClientThread {
     private static HashMap<String, ServerConnectClientThread> hm = new HashMap<>();
+
+    // 离线消息缓存，key为接受者的userid
+    private static HashMap<String, List<Message>> hmMsg = new HashMap<>();
 
     /**
      * 添加线程对象
@@ -42,5 +49,18 @@ public class ManageServerConnectClientThread {
 
     public static HashMap<String, ServerConnectClientThread> getHm() {
         return hm;
+    }
+
+    public static HashMap<String, List<Message>> getHmMsg() {
+        return hmMsg;
+    }
+
+    public static void addMsg(String userId, Message message) {
+        List<Message> messages = hmMsg.computeIfAbsent(userId, k -> new ArrayList<>());
+        messages.add(message);
+    }
+
+    public static List<Message> readAndRemoveMsg(String userId) {
+        return hmMsg.remove(userId);
     }
 }

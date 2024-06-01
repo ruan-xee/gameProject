@@ -6,6 +6,7 @@ import com.rxee.qqcommon.MessageType;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 public class ServerConnectClientThread extends Thread{
     private Socket socket;
@@ -24,6 +25,14 @@ public class ServerConnectClientThread extends Thread{
         while (true) {
             System.out.println("服务端和客户端 " + userId + " 保持通信，读取数据。。。");
             try {
+                // 读取一下离线时的缓存消息
+                List<Message> msgList = ManageServerConnectClientThread.readAndRemoveMsg(userId);
+                if (msgList != null) {
+                    for (Message msg : msgList) {
+                        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                        oos.writeObject(msg);
+                    }
+                }
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 Message message = (Message) ois.readObject();
                 // 判断msg类型，做相应的业务处理
@@ -34,7 +43,8 @@ public class ServerConnectClientThread extends Thread{
                         ObjectOutputStream oos = new ObjectOutputStream(serverConnectClientThread.getSocket().getOutputStream());
                         oos.writeObject(message);
                     } else {
-                        System.out.println(message.getSender() + "所请求的客户端离线，不能转发消息。。。");
+                        System.out.println(message.getSender() + "所请求的客户端离线，消息将暂存，待用户上线后接收~");
+                        ManageServerConnectClientThread.addMsg(message.getReciever(), message);
                     }
                 } else if (MessageType.MESSAGE_COMM_MSG_TO_ALL.equals(message.getMsgType())) { // 群聊消息转发
                     // 需要遍历在线用户线程集合，得到每个线程的socket（排除自己）
