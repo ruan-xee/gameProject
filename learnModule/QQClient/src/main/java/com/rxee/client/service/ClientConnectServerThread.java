@@ -3,6 +3,7 @@ package com.rxee.client.service;
 import com.rxee.qqcommon.Message;
 import com.rxee.qqcommon.MessageType;
 
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
@@ -31,6 +32,12 @@ public class ClientConnectServerThread extends Thread {
                     System.out.println("（" + message.getSendTime() + "） " + message.getSender() + " 对 你 说： " + message.getContent());
                 } else if (MessageType.MESSAGE_COMM_MSG_TO_ALL.equals(message.getMsgType())) {
                     System.out.println("（" + message.getSendTime() + "） " + message.getSender() + " 对 大家 说： " + message.getContent());
+                } else if (MessageType.MESSAGE_FILE_MSG.equals(message.getMsgType())) {
+                    System.out.println(message.getSender() + " 对 你 发送了一个文件：" + message.getSrc() + " 至：" + message.getDest());
+                    FileOutputStream fos = new FileOutputStream(message.getDest());
+                    fos.write(message.getFileBytes());
+                    fos.close();
+                    System.out.println("保存文件成功！");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

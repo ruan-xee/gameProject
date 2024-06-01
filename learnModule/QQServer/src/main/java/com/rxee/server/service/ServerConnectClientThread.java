@@ -45,7 +45,7 @@ public class ServerConnectClientThread extends Thread{
                             oos.writeObject(message);
                         }
                     }
-                }else if (MessageType.MESSAGE_GET_ONLINE_FRIEND.equals(message.getMsgType())) { // 获取在线列表
+                } else if (MessageType.MESSAGE_GET_ONLINE_FRIEND.equals(message.getMsgType())) { // 获取在线列表
                     // 客户端获取在线列表
                     System.out.println(message.getSender() + " 请求在线用户列表。。。");
                     String onlineUser = ManageServerConnectClientThread.getOnlineUser();
@@ -60,6 +60,16 @@ public class ServerConnectClientThread extends Thread{
                     ManageServerConnectClientThread.removeServerConnectClientThread(message.getSender());
                     socket.close();
                     break;
+                } else if (MessageType.MESSAGE_FILE_MSG.equals(message.getMsgType())) {
+                    System.out.println(message.getSender() + " 发送文件给 " + message.getReciever());
+                    ServerConnectClientThread serverConnectClientThread = ManageServerConnectClientThread.getServerConnectClientThread(message.getReciever());
+                    if (serverConnectClientThread != null) {
+                        // 客户端在线，转发消息
+                        ObjectOutputStream oos = new ObjectOutputStream(serverConnectClientThread.getSocket().getOutputStream());
+                        oos.writeObject(message);
+                    } else {
+                        System.out.println(message.getSender() + "所请求的客户端离线，不能转发文件。。。");
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

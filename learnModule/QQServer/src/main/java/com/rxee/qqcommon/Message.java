@@ -29,6 +29,43 @@ public class Message implements Serializable {
      */
     private String msgType;
 
+    private byte[] fileBytes;
+    private long fileLen = 0;
+    private String dest; // 将文件传输到哪里
+    private String src; // 源文件路径
+
+    public byte[] getFileBytes() {
+        return fileBytes;
+    }
+
+    public void setFileBytes(byte[] fileBytes) {
+        this.fileBytes = fileBytes;
+    }
+
+    public long getFileLen() {
+        return fileLen;
+    }
+
+    public void setFileLen(long fileLen) {
+        this.fileLen = fileLen;
+    }
+
+    public String getDest() {
+        return dest;
+    }
+
+    public void setDest(String dest) {
+        this.dest = dest;
+    }
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
     public String getSender() {
         return sender;
     }

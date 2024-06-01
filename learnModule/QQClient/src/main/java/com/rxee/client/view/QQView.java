@@ -1,6 +1,7 @@
 package com.rxee.client.view;
 
 
+import com.rxee.client.service.FileClientService;
 import com.rxee.client.service.MessageClientService;
 import com.rxee.client.service.UserClientService;
 import com.rxee.client.util.Utility;
@@ -70,7 +71,13 @@ public class QQView {
                                     MessageClientService.sendMessageToEveryOnline(c, userId);
                                     break;
                                 case "4":
-                                    System.out.println("发送文件\n");
+                                    System.out.print("请输入你想传输文件的用户号（在线）：");
+                                    String receiver4 = Utility.readString(50);
+                                    System.out.print("请输入你想传输文件的路径（如：d:\\xx.jpg）：");
+                                    String src = Utility.readString(100);
+                                    System.out.print("请输入你想保存文件的路径（如：d:\\xx.jpg）：");
+                                    String dest = Utility.readString(100);
+                                    FileClientService.sendFileToSomeone(src, dest, userId, receiver4);
                                     break;
                                 case "9":
                                     // 调用一个方法，给服务器发送一个退出系统的msg
